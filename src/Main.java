@@ -30,8 +30,28 @@ public class Main {
     }
 
     private static int partTwo(ArrayList<Brick> bricks) {
-        // Implement me!
-        return 0;
+        int max = 0;
+        ArrayList<Integer> layout = new ArrayList<Integer>();
+        int lastEnd = 0;
+        for (Brick b : bricks) {
+            if (b.getEnd() > lastEnd) lastEnd = b.getEnd();
+        }
+        for (int i = 0; i <= lastEnd; i++) {
+            layout.add(0);
+        }
+        for (Brick b: bricks) {
+            int height = 0;
+            for (int i = b.getStart(); i <= b.getEnd(); i++) {   // fixed range
+                if (layout.get(i) > height) height = layout.get(i);
+            }
+            for (int i = b.getStart(); i <= b.getEnd(); i++) {
+                layout.set(i, height + 1);
+            }
+        }
+        for (Integer i : layout) {
+            if (i > max) max = i;
+        }
+        return max;
     }
 
     public static ArrayList<String> getFileData(String fileName) {
