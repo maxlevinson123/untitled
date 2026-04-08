@@ -18,7 +18,7 @@ public class Main {
 
 
         System.out.println(partOne(bricks));
-        System.out.println(partTwo(bricks));
+        System.out.println(partTwo2DArray(bricks));
     }
 
     private static int partOne(ArrayList<Brick> bricks) {
@@ -41,7 +41,7 @@ public class Main {
         }
         for (Brick b: bricks) {
             int height = 0;
-            for (int i = b.getStart(); i <= b.getEnd(); i++) {   // fixed range
+            for (int i = b.getStart(); i <= b.getEnd(); i++) {
                 if (layout.get(i) > height) height = layout.get(i);
             }
             for (int i = b.getStart(); i <= b.getEnd(); i++) {
@@ -50,6 +50,32 @@ public class Main {
         }
         for (Integer i : layout) {
             if (i > max) max = i;
+        }
+        return max;
+    }
+
+    private static int partTwo2DArray(ArrayList<Brick> bricks) {
+        int lastEnd = 0;
+        for (Brick b : bricks) {
+            if (b.getEnd() > lastEnd) lastEnd = b.getEnd();
+        }
+        int[][] layout = new int[bricks.size() + 1][lastEnd + 1];
+        int max = 0;
+        for (Brick b : bricks) {
+            int height = 0;
+            for (int i = b.getStart(); i <= b.getEnd(); i++) {
+                for (int j = layout.length - 1; j >= 0; j--) {
+                    if (layout[j][i] == 1) {
+                        if (j > height) height = j;
+                        break;
+                    }
+                }
+            }
+                for (int k = b.getStart(); k <= b.getEnd(); k ++) {
+                    layout[height + 1][k] = 1;
+                }
+                if (height + 1 > max) max = height + 1;
+
         }
         return max;
     }
